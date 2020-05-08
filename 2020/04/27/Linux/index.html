@@ -1,0 +1,370 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Linux相关 | njwj-zhangqi Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="阿里云服务器IP:123.56.56.157(公网) 172.17.130.155(私网) 1. CentOS安装(精简版)出现的问题： ifconfig 无法使用  1sudo yum install net-tools   紧接着会报错：Could not resolve host: mirrorlist.centos.org; Unknown error  12345678cd &#x2F;etc&#x2F;s">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux相关">
+<meta property="og:url" content="http://yoursite.com/2020/04/27/Linux/index.html">
+<meta property="og:site_name" content="njwj-zhangqi Blog">
+<meta property="og:description" content="阿里云服务器IP:123.56.56.157(公网) 172.17.130.155(私网) 1. CentOS安装(精简版)出现的问题： ifconfig 无法使用  1sudo yum install net-tools   紧接着会报错：Could not resolve host: mirrorlist.centos.org; Unknown error  12345678cd &#x2F;etc&#x2F;s">
+<meta property="article:published_time" content="2020-04-27T10:02:29.970Z">
+<meta property="article:modified_time" content="2020-04-27T10:05:00.256Z">
+<meta property="article:author" content="njwj-zhangqi">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="CentOS">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternative" href="/atom.xml" title="njwj-zhangqi Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">njwj-zhangqi Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="yoursite.com">
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-Linux" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/04/27/Linux/" class="article-date">
+  <time datetime="2020-04-27T10:02:29.970Z" itemprop="datePublished">2020-04-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Linux/">Linux</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Linux相关
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>阿里云服务器IP:123.56.56.157(公网) 172.17.130.155(私网)</p>
+<h2 id="1-CentOS安装-精简版"><a href="#1-CentOS安装-精简版" class="headerlink" title="1. CentOS安装(精简版)"></a>1. CentOS安装(精简版)</h2><h3 id="出现的问题："><a href="#出现的问题：" class="headerlink" title="出现的问题："></a>出现的问题：</h3><ol>
+<li>ifconfig 无法使用</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install net-tools</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>紧接着会报错：Could not resolve host: mirrorlist.centos.org; Unknown error</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cd /etc/sysconfig/network-scripts</span><br><span class="line">ls</span><br><span class="line">vi ifcfg-ens33</span><br><span class="line">按i进入insert模式编辑</span><br><span class="line">BOOTPROTO=dhcp</span><br><span class="line">ONBOOT=yes</span><br><span class="line">按ESC退出编辑模式，再按:wq保存退出</span><br><span class="line">service network restart</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>wget 找不到</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install wget</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li><p>JDK镜像下载站</p>
+<p><a href="https://repo.huaweicloud.com/java/jdk/8u181-b13/" target="_blank" rel="noopener">华为JDK8镜像站</a></p>
+</li>
+<li><p>使用wget下载</p>
+</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget --no-cookies --header <span class="string">"Cookie: oraclelicense=accept-securebackup-cookie;"</span>  https://repo.huaweicloud.com/java/jdk/8u181-b13/jdk-8u181-linux-x64.tar.gz</span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>安装JDK</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mkdir /usr/<span class="built_in">local</span>/java</span><br><span class="line">cp jdk-8u181-linux-x64.tar.gz /usr/<span class="built_in">local</span>/java</span><br><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/java</span><br><span class="line"><span class="comment"># tar-备份文件,-z通过gzip指令处理备份文件 -x从备份文件中还原文件 -v显示指令执行过程 -f 指定备份文件</span></span><br><span class="line">tar -zxf jdk-8u181-linux-x64.tar.gz <span class="comment"># 不显示解压过程</span></span><br><span class="line">mv jdk1.8.0_181/ jdk8 <span class="comment"># 重命名</span></span><br><span class="line">rm -f jdk-8u181-linux-x64.tar.gz <span class="comment"># 删除压缩包 rm 删除文件 -f 强制删除文件或目录</span></span><br></pre></td></tr></table></figure>
+
+<ol start="7">
+<li>配置JDK环境变量</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/profile  <span class="comment"># /etc/profile 为全局变量文件</span></span><br><span class="line"><span class="comment"># Shitf +GG  跳转到文件最后一行</span></span><br><span class="line"><span class="comment"># 按i进入插入模式</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#java env</span></span><br><span class="line"><span class="comment"># $PATH 不能省略，否则环境变量出现问题导致vi等基本命令无法使用</span></span><br><span class="line"><span class="comment"># CLASSPATH 是可以省略的</span></span><br><span class="line"><span class="built_in">export</span> JAVA_HOME=/usr/<span class="built_in">local</span>/java/jdk8</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$JAVA_HOME</span>/bin </span><br><span class="line"><span class="built_in">export</span> CLASSPATH=.:<span class="variable">$JAVA_HOME</span>/jre/lib/rt.jar:<span class="variable">$JAVA_HOME</span>/lib/dt.jar:<span class="variable">$JAVA_HOME</span>/lib/tools.jar</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使环境变量生效</span></span><br><span class="line"><span class="built_in">source</span> /etc/profile</span><br><span class="line"><span class="comment"># 查看java版本</span></span><br><span class="line">java -version</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-VMware配置静态IP"><a href="#2-VMware配置静态IP" class="headerlink" title="2 VMware配置静态IP"></a>2 VMware配置静态IP</h2><ol>
+<li>编辑 ==&gt; 虚拟网络编辑器</li>
+<li>获取管理员模式 ==&gt;选中NAT模式 ==&gt; 设置底部的子网IP  192.168.170.0 ==&gt; 点击NAT设置 ==&gt; 填写网关IP192.168.170.2</li>
+<li>配置虚拟机中的网卡文件<code>vi /etc/sysconfig/network-scripts/ifcfg-ens33</code></li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 由dhcp修改为static</span></span><br><span class="line">BOOTPROTO=static</span><br><span class="line"><span class="meta">#</span><span class="bash"> 在底部新增三行配置</span></span><br><span class="line">IPADDR=192.168.170.100  # 自定义的地址</span><br><span class="line">NETMASK=255.255.255.0 # 子网掩码</span><br><span class="line">GATEWAY=192.168.170.2 # NAT设置中填写的网关IP</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>重启网络服务</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service network restart</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="4-Linux命令"><a href="#4-Linux命令" class="headerlink" title="4 Linux命令"></a>4 Linux命令</h3><ul>
+<li>free -m 查看内存</li>
+<li>df -hl 查看磁盘</li>
+<li>top 查看CPU和内存使用量</li>
+<li>lsb_release -a 查看操作系统版本</li>
+<li>du -sh 查看当前文件总大小</li>
+<li>ls -lh 查看文件详细信息</li>
+</ul>
+<p><strong>Linux网络问题</strong></p>
+<p>wget: 无法解析主机地址 “mirrors.aliyun.com”</p>
+<ol>
+<li>ping 8.8.8.8 确定网络没问题</li>
+<li>设置了域名服务器</li>
+<li>确保网关已设置</li>
+</ol>
+<p>yum install  报错There are no enabled repos.</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2020/04/27/Linux/" data-id="ck9ibfgi40001z8w6djsw9hfq" class="article-share-link" data-share="baidu" data-title="Linux相关">Share</a>
+      
+
+      
+        <a href="http://yoursite.com/2020/04/27/Linux/#ds-thread" class="article-comment-link">Comments</a>
+      
+
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CentOS/" rel="tag">CentOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2020/04/25/BlogTodo/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Blog Todo</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+  <section id="comments">
+    <div id="ds-thread" class="ds-thread" data-thread-key="2020/04/27/Linux/" data-title="Linux相关" data-url="http://yoursite.com/2020/04/27/Linux/"></div>
+  </section>
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Todo/">Todo</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CentOS/" rel="tag">CentOS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Todo/" rel="tag">Todo</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CentOS/" style="font-size: 10px;">CentOS</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Todo/" style="font-size: 10px;">Todo</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/04/27/Linux/">Linux相关</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/25/BlogTodo/">Blog Todo</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Links</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="http://arvinxiang.com" target="_blank">主题作者</a>
+          </li>
+        
+          <li>
+            <a href="http://reqianduan.com" target="_blank">热前端</a>
+          </li>
+        
+          <li>
+            <a href="http://yuancheng.work" target="_blank">远程.work</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 njwj-zhangqi<br>
+      Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+    </div>
+  </div>
+</footer>
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="totop"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+<!-- 多说公共js代码 start -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"reqianduan"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+<!-- 多说公共js代码 end -->
+
+
+<!-- 百度分享 start -->
+
+<div id="article-share-box" class="article-share-box">
+  <div id="bdshare" class="bdsharebuttonbox article-share-links">
+    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
+    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
+    <a class="article-share-more" data-cmd="more" title="更多"></a>
+  </div>
+</div>
+<script>
+  function SetShareData(cmd, config) {
+    if (shareDataTitle && shareDataUrl) {
+      config.bdText = shareDataTitle;
+      config.bdUrl = shareDataUrl;
+    }
+    return config;
+  }
+  window._bd_share_config={
+    "common":{onBeforeClick: SetShareData},
+    "share":{"bdCustomStyle":"/css/bdshare.css"}
+  };
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+<!-- 百度分享 end -->
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+</div>
+</body>
+</html>
