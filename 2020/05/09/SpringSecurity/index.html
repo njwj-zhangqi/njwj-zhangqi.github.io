@@ -1,102 +1,222 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-  <meta charset="utf-8">
-  
-  <title>SpringSecurity | njwj-zhangqi Blog</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="为了保证安全性，我司现在后台所有token有效期(Expires&#x2F;Max-Age)都是Session，就是当浏览器关闭了就丢失了。重新打开游览器都需要重新登录验证，后端也会在每周固定一个时间点重新刷新token，让后台用户全部重新登录一次，确保后台用户不会因为电脑遗失或者其它原因被人随意使用账号。 流程图123456789101112graph TBa[编写Security配置类] --&gt;">
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Spring Security">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SpringSecurity">
 <meta property="og:url" content="http://yoursite.com/2020/05/09/SpringSecurity/index.html">
 <meta property="og:site_name" content="njwj-zhangqi Blog">
-<meta property="og:description" content="为了保证安全性，我司现在后台所有token有效期(Expires&#x2F;Max-Age)都是Session，就是当浏览器关闭了就丢失了。重新打开游览器都需要重新登录验证，后端也会在每周固定一个时间点重新刷新token，让后台用户全部重新登录一次，确保后台用户不会因为电脑遗失或者其它原因被人随意使用账号。 流程图123456789101112graph TBa[编写Security配置类] --&gt;">
+<meta property="og:description" content="Spring Security">
+<meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-05-09T04:38:04.000Z">
-<meta property="article:modified_time" content="2020-05-09T04:38:18.457Z">
+<meta property="article:modified_time" content="2020-05-09T06:46:32.678Z">
 <meta property="article:author" content="njwj-zhangqi">
 <meta name="twitter:card" content="summary">
-  
-    <link rel="alternative" href="/atom.xml" title="njwj-zhangqi Blog" type="application/atom+xml">
-  
-  
-    <link rel="icon" href="/favicon.png">
-  
-  
-<link rel="stylesheet" href="/css/style.css">
 
-  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+<link rel="canonical" href="http://yoursite.com/2020/05/09/SpringSecurity/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>SpringSecurity | njwj-zhangqi Blog</title>
   
-<meta name="generator" content="Hexo 4.2.0"></head>
-<body>
-<div id="container">
-  <div id="wrap">
-    <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">njwj-zhangqi Blog</a>
-      </h1>
-      
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
-          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
-          <input type="submit" value="" class="search-form-submit">
-          <input name=tn type=hidden value="bds">
-          <input name=cl type=hidden value="3">
-          <input name=ct type=hidden value="2097152">
-          <input type="hidden" name="si" value="yoursite.com">
-        </form>
-      </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">njwj-zhangqi Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
     </div>
   </div>
-</header>
-    <div class="outer">
-      <section id="main"><article id="post-SpringSecurity" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/05/09/SpringSecurity/" class="article-date">
-  <time datetime="2020-05-09T04:38:04.000Z" itemprop="datePublished">2020-05-09</time>
-</a>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">10</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">21</span></a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
     
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/SSM%E6%A1%86%E6%9E%B6/">SSM框架</a>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
   </div>
 
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      SpringSecurity
-    </h1>
-  
 
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/09/SpringSecurity/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="njwj-zhangqi">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="njwj-zhangqi Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SpringSecurity
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-05-09 12:38:04 / 修改时间：14:46:32" itemprop="dateCreated datePublished" datetime="2020-05-09T12:38:04+08:00">2020-05-09</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SSM%E6%A1%86%E6%9E%B6/" itemprop="url" rel="index"><span itemprop="name">SSM框架</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
       </header>
+
     
-    <div class="article-entry" itemprop="articleBody">
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
-        <p>为了保证安全性，我司现在后台所有token有效期(Expires/Max-Age)都是Session，就是当浏览器关闭了就丢失了。重新打开游览器都需要重新登录验证，后端也会在每周固定一个时间点重新刷新token，让后台用户全部重新登录一次，确保后台用户不会因为电脑遗失或者其它原因被人随意使用账号。</p>
-<h3 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">graph TB</span><br><span class="line">a[编写Security配置类] --&gt; |继承| b[WebSecurityConfigurerAdapter]</span><br><span class="line">b --&gt; |configure方法| c[创建过滤器]</span><br><span class="line">用户请求 --&gt; c</span><br><span class="line">c --&gt;|鉴权| d[FilterSecurityInterceptor]</span><br><span class="line">d --&gt; |doFilter| e[父类AbstractSecurityInterceptor.beforeInvocation]</span><br><span class="line">e --&gt; |this.accessDecisionManager.decide方法| f[转交给AccessDecisionManager]</span><br><span class="line">c --&gt; |认证| n[UsernamePasswordAuthenticationFilter]</span><br><span class="line">c --&gt; |异常处理| o[ExceptionTranslationFilter]</span><br><span class="line">n --&gt; |父类中的doFilter| p[AbstractAuthenticationProcessingFilter]</span><br><span class="line">p --&gt; |调用attemptAuthentication| q[子类UsernamePasswordAuthenticationFilter实现]</span><br><span class="line">q --&gt; |委托| r[AuthenticationManager]</span><br></pre></td></tr></table></figure>
+        <p>Spring Security</p>
+<a id="more"></a>
+
+<h3 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h3><pre class="mermaid">graph TB
+a[编写Security配置类] --> |继承| b[WebSecurityConfigurerAdapter]
+b --> |configure方法| c[创建过滤器]
+用户请求 --> c
+c -->|鉴权| d[FilterSecurityInterceptor]
+d --> |doFilter| e[父类AbstractSecurityInterceptor.beforeInvocation]
+e --> |this.accessDecisionManager.decide方法| f[转交给AccessDecisionManager]
+c --> |认证| n[UsernamePasswordAuthenticationFilter]
+c --> |异常处理| o[ExceptionTranslationFilter]
+n --> |父类中的doFilter| p[AbstractAuthenticationProcessingFilter]
+p --> |调用attemptAuthentication| q[子类UsernamePasswordAuthenticationFilter实现]
+q --> |委托| r[AuthenticationManager]</pre>
 
 <h3 id="切入点（过滤器）"><a href="#切入点（过滤器）" class="headerlink" title="切入点（过滤器）"></a>切入点（过滤器）</h3><h4 id="Spring-Security的配置类"><a href="#Spring-Security的配置类" class="headerlink" title="Spring Security的配置类"></a>Spring Security的配置类</h4><p>在使用SpringSecurity时，我们会去写一个配置类继承WebSecurityConfigurerAdapter重写configure方法。</p>
 <p>如果不重写上面的方法，在父类WebSecutiryConfigurerAdapter中，有默认的实现方法：</p>
@@ -146,7 +266,12 @@
 <li>AuthenticationProvider是一个接口，常用的实现类是DaoAuthenticationProvider，DaoAuthenticationProvider是继承自AbstractUserDetailsAuthenticationProvider，在这个抽象类中就已经实现了authenticate的部分功能，但是获取用户信息是一个抽象方法retrieveUser，需要子类去实现</li>
 <li>DaoAuthenticationProvider实现了retrieveUser方法，但是是通过UserDetailsService.loadByUsername()实现的</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">graph TB</span><br><span class="line">r[AuthenticationManager] --&gt; s[ProviderManager]</span><br><span class="line">s --&gt; t[AuthenticationProvider]</span><br><span class="line">t --&gt; u[AbstractUserDetailsAuthenticationProvider]</span><br><span class="line">u --&gt; v[DaoAuthenticationProvider]</span><br><span class="line">v --&gt; w[UserDetailsService]</span><br></pre></td></tr></table></figure>
+<pre class="mermaid">graph TB
+r[AuthenticationManager] --> s[ProviderManager]
+s --> t[AuthenticationProvider]
+t --> u[AbstractUserDetailsAuthenticationProvider]
+u --> v[DaoAuthenticationProvider]
+v --> w[UserDetailsService]</pre>
 
 
 
@@ -203,7 +328,14 @@
 <p><strong>认证成功返回的Authentication对象将会保存在当前的SecurityContext中。</strong></p>
 </blockquote>
 <h3 id="鉴权过程："><a href="#鉴权过程：" class="headerlink" title="鉴权过程："></a>鉴权过程：</h3><p>访问url时，会被AbstractSecurityInterceptor拦截器拦截，然后调用FilterInvocationSecurityMetadataSource的方法来获取被拦截url所需的全部权限，再调用授权管理器AccessDecisionManager鉴权。</p>
-<h4 id="流程-1"><a href="#流程-1" class="headerlink" title="流程"></a>流程</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">graph TB</span><br><span class="line">f[AccessDecisionManager] --&gt; |实现decide方法| g[抽象类AbstractAccessDecisionManager]</span><br><span class="line">g --&gt; |子类| h[AffirmativeBased]</span><br><span class="line">g --&gt; i[ConsensusBased]</span><br><span class="line">g --&gt; j[UnanimousBased]</span><br><span class="line">h --&gt; |遍历Voter,调用voter方法| k[AccessDecisionVoter]</span><br><span class="line">k --&gt; |常用子类| l[RoleVoter]</span><br><span class="line">k --&gt; |常用子类| m[AuthenticatedVoter]</span><br></pre></td></tr></table></figure>
+<h4 id="流程-1"><a href="#流程-1" class="headerlink" title="流程"></a>流程</h4><pre class="mermaid">graph TB
+f[AccessDecisionManager] --> |实现decide方法| g[抽象类AbstractAccessDecisionManager]
+g --> |子类| h[AffirmativeBased]
+g --> i[ConsensusBased]
+g --> j[UnanimousBased]
+h --> |遍历Voter,调用voter方法| k[AccessDecisionVoter]
+k --> |常用子类| l[RoleVoter]
+k --> |常用子类| m[AuthenticatedVoter]</pre>
 
 
 
@@ -263,209 +395,205 @@
 <h3 id="SpringSecurity配置类"><a href="#SpringSecurity配置类" class="headerlink" title="SpringSecurity配置类"></a>SpringSecurity配置类</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableWebSecurity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WebSecurityConfig</span> <span class="keyword">extends</span> <span class="title">WebSecurityConfigurerAdapter</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        http.authorizeRequests()</span><br><span class="line">                .antMatchers(<span class="string">"/"</span>, <span class="string">"/home"</span>).permitAll()</span><br><span class="line">                .antMatchers(</span><br><span class="line">                        <span class="string">"/webjars/springfox-swagger-ui/**"</span>,</span><br><span class="line">                        <span class="string">"/swagger-ui.html"</span>,</span><br><span class="line">                        <span class="string">"/swagger-resources/**"</span>,</span><br><span class="line">                        <span class="string">"/swagger/**"</span>,</span><br><span class="line">                        <span class="string">"/**/v2/api-docs"</span>).permitAll() <span class="comment">// swagger-ui配置</span></span><br><span class="line">                .anyRequest().authenticated()</span><br><span class="line">                .and().formLogin().permitAll()</span><br><span class="line">                .and().rememberMe()</span><br><span class="line">                .and().logout().permitAll();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
-      
     </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2020/05/09/SpringSecurity/" data-id="ck9z562vm000tzcw6h78z40jm" class="article-share-link" data-share="baidu" data-title="SpringSecurity">Share</a>
-      
 
-      
-        <a href="http://yoursite.com/2020/05/09/SpringSecurity/#ds-thread" class="article-comment-link">Comments</a>
-      
-
-      
-    </footer>
-  </div>
-  
     
-<nav id="article-nav">
-  
-    <a href="/2020/05/09/SpringCloud/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          SpringCloud
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2020/05/09/SpringInAction%E7%AC%94%E8%AE%B0/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">SpringInAction笔记</div>
-    </a>
-  
-</nav>
-
-  
-</article>
-
-
-  <section id="comments">
-    <div id="ds-thread" class="ds-thread" data-thread-key="2020/05/09/SpringSecurity/" data-title="SpringSecurity" data-url="http://yoursite.com/2020/05/09/SpringSecurity/"></div>
-  </section>
-</section>
-      
-      <aside id="sidebar">
-  
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">Categories</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaSE/">JavaSE</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaWeb/">JavaWeb</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SSM%E6%A1%86%E6%9E%B6/">SSM框架</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Todo/">Todo</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BA%95%E5%B1%82/">底层</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/">开发工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/">微服务</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a><span class="category-list-count">2</span></li></ul>
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/05/09/SpringInAction%E7%AC%94%E8%AE%B0/" rel="prev" title="SpringInAction笔记">
+      <i class="fa fa-chevron-left"></i> SpringInAction笔记
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/05/09/SpringCloud/" rel="next" title="SpringCloud">
+      SpringCloud <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
-  </div>
-
-  
+      </footer>
     
+  </article>
   
-    
   
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">1</span></li></ul>
-    </div>
-  </div>
-
   
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2020/05/09/SpringCloud/">SpringCloud</a>
-          </li>
-        
-          <li>
-            <a href="/2020/05/09/SpringSecurity/">SpringSecurity</a>
-          </li>
-        
-          <li>
-            <a href="/2020/05/09/SpringInAction%E7%AC%94%E8%AE%B0/">SpringInAction笔记</a>
-          </li>
-        
-          <li>
-            <a href="/2020/05/09/Mybatis/">Mybatis</a>
-          </li>
-        
-          <li>
-            <a href="/2020/05/09/Maven%E9%85%8D%E7%BD%AE/">Maven配置</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Links</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="http://arvinxiang.com" target="_blank">主题作者</a>
-          </li>
-        
-          <li>
-            <a href="http://reqianduan.com" target="_blank">热前端</a>
-          </li>
-        
-          <li>
-            <a href="http://yuancheng.work" target="_blank">远程.work</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-      
-    </div>
-    <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2020 njwj-zhangqi<br>
-      Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
-      .
-      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
-    </div>
-  </div>
-</footer>
-  </div>
-  <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-  <!-- totop start -->
-<div id="totop">
-<a title="totop"><img src="/img/scrollup.png"/></a>
-</div>
-
-<!-- totop end -->
-
-<!-- 多说公共js代码 start -->
-<script type="text/javascript">
-var duoshuoQuery = {short_name:"reqianduan"};
-  (function() {
-    var ds = document.createElement('script');
-    ds.type = 'text/javascript';ds.async = true;
-    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-    ds.charset = 'UTF-8';
-    (document.getElementsByTagName('head')[0]
-     || document.getElementsByTagName('body')[0]).appendChild(ds);
-  })();
-  </script>
-<!-- 多说公共js代码 end -->
 
 
-<!-- 百度分享 start -->
 
-<div id="article-share-box" class="article-share-box">
-  <div id="bdshare" class="bdsharebuttonbox article-share-links">
-    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
-    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
-    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
-    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
-    <a class="article-share-more" data-cmd="more" title="更多"></a>
-  </div>
-</div>
+          </div>
+          
+
 <script>
-  function SetShareData(cmd, config) {
-    if (shareDataTitle && shareDataUrl) {
-      config.bdText = shareDataTitle;
-      config.bdUrl = shareDataUrl;
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
     }
-    return config;
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
   }
-  window._bd_share_config={
-    "common":{onBeforeClick: SetShareData},
-    "share":{"bdCustomStyle":"/css/bdshare.css"}
-  };
-  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
 </script>
 
-<!-- 百度分享 end -->
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
 
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
 
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
 
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#流程图"><span class="nav-number">1.</span> <span class="nav-text">流程图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#切入点（过滤器）"><span class="nav-number">2.</span> <span class="nav-text">切入点（过滤器）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring-Security的配置类"><span class="nav-number">2.1.</span> <span class="nav-text">Spring Security的配置类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#认证和授权的过滤器"><span class="nav-number">2.2.</span> <span class="nav-text">认证和授权的过滤器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ExceptionTranslationFilter"><span class="nav-number">2.3.</span> <span class="nav-text">ExceptionTranslationFilter</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#UsernamePasswordAuthenticationFilter"><span class="nav-number">2.4.</span> <span class="nav-text">UsernamePasswordAuthenticationFilter</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#认证过程"><span class="nav-number">3.</span> <span class="nav-text">认证过程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#流程"><span class="nav-number">3.1.</span> <span class="nav-text">流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AuthenticationManager"><span class="nav-number">3.2.</span> <span class="nav-text">AuthenticationManager</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ProviderManager进行实现"><span class="nav-number">3.3.</span> <span class="nav-text">ProviderManager进行实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AuthenticationProvider具体实现"><span class="nav-number">4.</span> <span class="nav-text">AuthenticationProvider具体实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#鉴权过程："><span class="nav-number">5.</span> <span class="nav-text">鉴权过程：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#流程-1"><span class="nav-number">5.1.</span> <span class="nav-text">流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#鉴权接口AccessDecisionManager"><span class="nav-number">5.2.</span> <span class="nav-text">鉴权接口AccessDecisionManager</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实现类AbstractAccessDecisionManager"><span class="nav-number">5.3.</span> <span class="nav-text">实现类AbstractAccessDecisionManager</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RoleVoter"><span class="nav-number">5.4.</span> <span class="nav-text">RoleVoter</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AuthenticatedVoter"><span class="nav-number">5.5.</span> <span class="nav-text">AuthenticatedVoter</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SpringSecurity配置类"><span class="nav-number">6.</span> <span class="nav-text">SpringSecurity配置类</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
 
-
-
-<script src="/js/script.js"></script>
-
-
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">njwj-zhangqi</p>
+  <div class="site-description" itemprop="description"></div>
 </div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">njwj-zhangqi</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
 </body>
 </html>
