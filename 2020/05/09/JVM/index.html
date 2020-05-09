@@ -1,0 +1,480 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>JVM | njwj-zhangqi Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="类的生命周期123456graph LR加载--&gt; a[链接]a --&gt; b[初始化]b--&gt;c[使用]c--&gt;卸载  加载：通过ClassLoader将class文件加载到内存中（双亲委派机制） 链接：分为验证+准备+解析三个步骤，  验证：检查文件的安全性、 准备：分配静态变量空间， 解析：将符号引用替换为直接引用。未加载前引用某个类A，只能用符号Class A代替，加">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JVM">
+<meta property="og:url" content="http://yoursite.com/2020/05/09/JVM/index.html">
+<meta property="og:site_name" content="njwj-zhangqi Blog">
+<meta property="og:description" content="类的生命周期123456graph LR加载--&gt; a[链接]a --&gt; b[初始化]b--&gt;c[使用]c--&gt;卸载  加载：通过ClassLoader将class文件加载到内存中（双亲委派机制） 链接：分为验证+准备+解析三个步骤，  验证：检查文件的安全性、 准备：分配静态变量空间， 解析：将符号引用替换为直接引用。未加载前引用某个类A，只能用符号Class A代替，加">
+<meta property="article:published_time" content="2020-05-09T04:25:38.000Z">
+<meta property="article:modified_time" content="2020-05-09T04:26:45.141Z">
+<meta property="article:author" content="njwj-zhangqi">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternative" href="/atom.xml" title="njwj-zhangqi Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">njwj-zhangqi Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="yoursite.com">
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-JVM" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/05/09/JVM/" class="article-date">
+  <time datetime="2020-05-09T04:25:38.000Z" itemprop="datePublished">2020-05-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/JVM/">JVM</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      JVM
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="类的生命周期"><a href="#类的生命周期" class="headerlink" title="类的生命周期"></a>类的生命周期</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line"></span><br><span class="line">加载--&gt; a[链接]</span><br><span class="line">a --&gt; b[初始化]</span><br><span class="line">b--&gt;c[使用]</span><br><span class="line">c--&gt;卸载</span><br></pre></td></tr></table></figure>
+
+<p><strong>加载：</strong>通过ClassLoader将class文件加载到内存中（双亲委派机制）</p>
+<p><strong>链接</strong>：分为<strong>验证+准备+解析</strong>三个步骤，</p>
+<ul>
+<li><strong>验证</strong>：检查文件的安全性、</li>
+<li><strong>准备</strong>：分配静态变量空间，</li>
+<li><strong>解析</strong>：将符号引用替换为直接引用。未加载前引用某个类A，只能用符号Class A代替，加载后就可以直接引用类A的内存地址，如果引用的类A没有加载则先去加载）</li>
+</ul>
+<p><strong>类初始化：</strong>静态变量初始化</p>
+<p><strong>使用：</strong>使用对象</p>
+<p><strong>卸载：</strong>垃圾回收</p>
+<hr>
+<h3 id="加载"><a href="#加载" class="headerlink" title="加载"></a>加载</h3><h4 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h4><p>类的加载由类加载器辅助完成。包括BootStrapClassLoader、ExtClassLoader、AppClassLoader。</p>
+<p>加载器的顺序</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">graph RL</span><br><span class="line">d[自定义ClassLoader]--&gt;a[AppClassLoader]</span><br><span class="line">a --&gt; b[ExtClassLoader]</span><br><span class="line">b --&gt; c[BootStrapClassLoader]</span><br></pre></td></tr></table></figure>
+
+<p>先从自定义ClassLoader查询是否已经加载过，没有则依次往上传递看是否已经加载过。<br>到达Bootstrap ClassLoader仍然没有加载过，则往下依次在类路径中查找。</p>
+<p>加载过程主要完成三件事情：</p>
+<ul>
+<li>通过<strong>类的全限定名</strong>来获取定义此类的二进制字节流</li>
+<li>将字节流转换为运行时数据</li>
+<li>在堆中生成一个代表此类的java.lang.Class对象</li>
+</ul>
+<p><strong>ClassLoader.loadClass源码</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> Class&lt;?&gt; loadClass(String name, <span class="keyword">boolean</span> resolve)</span><br><span class="line">        <span class="keyword">throws</span> ClassNotFoundException</span><br><span class="line">    &#123;</span><br><span class="line">    <span class="keyword">synchronized</span> (getClassLoadingLock(name)) &#123;</span><br><span class="line">        <span class="comment">// First, check if the class has already been loaded</span></span><br><span class="line">        Class&lt;?&gt; c = findLoadedClass(name);</span><br><span class="line">        <span class="keyword">if</span> (c == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (parent != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    c = parent.loadClass(name, <span class="keyword">false</span>);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    c = findBootstrapClassOrNull(name);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</span><br><span class="line">                <span class="comment">// ClassNotFoundException thrown if class not found</span></span><br><span class="line">                <span class="comment">// from the non-null parent class loader</span></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (c == <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="comment">// If still not found, then invoke findClass in order</span></span><br><span class="line">                <span class="comment">// to find the class.</span></span><br><span class="line">                c = findClass(name);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (resolve) &#123;</span><br><span class="line">            resolveClass(c);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> c;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="加载Class的方式"><a href="#加载Class的方式" class="headerlink" title="加载Class的方式"></a>加载Class的方式</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1. loadClass()</span></span><br><span class="line">Class a = ClassLoader.getSystemClassLoader().loadClass(<span class="string">"se.Father"</span>);</span><br><span class="line"><span class="comment">// 2. Class.forName()</span></span><br><span class="line">Class b = Class.forName(<span class="string">"se.Father"</span>);</span><br><span class="line"><span class="comment">// 3. .getClass()</span></span><br><span class="line">Father f = <span class="keyword">new</span> Father();</span><br><span class="line">Class c = f.getClass();</span><br><span class="line"><span class="comment">// 4. .class</span></span><br><span class="line">Class d = Father<span class="class">.<span class="keyword">class</span></span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Class.forName()加载类，不但会将类加载，还会执行会执行类的静态变量初始化，因为调用了反射相关的方法。</li>
+<li>getClass()方法，创建好对象就肯定进行了类初始化。反射可以根据对象获取Class对象，根据对象获取到类信息来进行操作。getClass方法，有多态能力，运行时可以返回子类的类型信息</li>
+<li>类名.classs，是静态解析的，编译时可以确定类型信息</li>
+<li>ClassLoader.loadClass()只加载类，是不会导致类的初始化</li>
+</ul>
+<h4 id="自定义类加载"><a href="#自定义类加载" class="headerlink" title="自定义类加载"></a>自定义类加载</h4><ol>
+<li>遵守双亲委派模型，继承ClassLoader，重写findClass()方法</li>
+<li>破坏双亲委派模型，继承ClassLoader，重写loadClass()方法</li>
+</ol>
+<blockquote>
+<p>为什么loadClass()会破坏双亲委派模型？</p>
+<p>因为loadClass的源码中优先通过父加载器加载类。如果重写loadClass，则可以修改为先加载自己的类，这样就破坏了双亲委派模型向父类传递的原则。</p>
+<p>而findClass在ClassLoader的源码中，loadClass方法在父加载器无法加载到类的情况下，才会调用自身的findClass方法进行加载。所以findClass会先用父加载器加载。</p>
+</blockquote>
+<p><em>JVM中两个类是否相同,必须是同一个类加载器加载的</em></p>
+<h3 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h3><h4 id="类初始化"><a href="#类初始化" class="headerlink" title="类初始化"></a>类初始化</h4><h5 id="类初始化顺序"><a href="#类初始化顺序" class="headerlink" title="类初始化顺序"></a>类初始化顺序</h5><ol>
+<li>父类（静态变量、静态语句块）</li>
+<li>子类（静态变量、静态语句块）</li>
+<li>父类（实例变量、普通语句块）</li>
+<li>父类（构造函数）</li>
+<li>子类（实例变量、普通语句块）</li>
+<li>子类（构造函数）</li>
+</ol>
+<p><em>静态变量优先初始化，之后初始化父类对象，然后初始化子类对象。</em></p>
+<h5 id="初始化的条件"><a href="#初始化的条件" class="headerlink" title="初始化的条件"></a>初始化的条件</h5><p>JVM在<strong>有且仅有</strong>的5种情况下才会对类进行初始化：</p>
+<ul>
+<li><p>遇到new、getstatic、setstatic、invokestatic字节码指令时；</p>
+<p>对应的Java代码：new对象，读取或者设置静态变量，调用一个类的静态方法</p>
+</li>
+<li><p>对类进行反射的时候，没有初始化就会对类初始化</p>
+</li>
+<li><p>初始化一个类，父类没有初始化则先初始化父类</p>
+</li>
+<li><p>包含main方法的类先初始化</p>
+</li>
+<li><p>略</p>
+</li>
+</ul>
+<hr>
+<h2 id="JVM内存模型"><a href="#JVM内存模型" class="headerlink" title="JVM内存模型"></a>JVM内存模型</h2><p>内存模型有以下部分，重点了解运行时数据区。</p>
+<ul>
+<li>运行时数据区<ul>
+<li>方法区（元空间）</li>
+<li>堆</li>
+<li>虚拟机栈</li>
+<li>程序计数器</li>
+<li>本地方法栈</li>
+</ul>
+</li>
+<li>执行引擎</li>
+<li>JNI本地接口</li>
+<li>本地方法库</li>
+</ul>
+<h3 id="运行时数据区"><a href="#运行时数据区" class="headerlink" title="运行时数据区"></a>运行时数据区</h3><p><strong>线程私有</strong></p>
+<ul>
+<li>程序计数器</li>
+<li>本地方法栈</li>
+<li>虚拟机栈</li>
+</ul>
+<p><strong>线程共享</strong></p>
+<ul>
+<li>堆：存放对象 </li>
+<li>方法区：类信息、常量（final）、静态变量（static）</li>
+</ul>
+<h4 id="虚拟机栈"><a href="#虚拟机栈" class="headerlink" title="虚拟机栈"></a><strong>虚拟机栈</strong></h4><p>每个方法被执行都会创建一个栈帧，虚拟机栈就包括多个栈帧。栈帧又分为：</p>
+<ul>
+<li>局部变量表，存放各种基本类型和引用类型，占一个变量槽(VariableSlot，32位内存空间)，long和double占2个空间<ul>
+<li>Slot复用。PC计数器的位置超过变量的作用域，对应的Slot就可以交给其他变量使用。能够节省空间，但是影响GC的回收，因为超过了作用域会等待其他变量复用，引用的对象就不会进行回收。</li>
+</ul>
+</li>
+<li>操作数栈</li>
+<li>动态连接：每个栈帧持有一个指向运行时常量池所属方法的直接引用。和类加载的静态解析相似，需要知道方法的直接地址，而不是符号引用。</li>
+<li>方法出口：方法正常返回可以用调用方法的PC计数器值作为返回地址。对于异常退出则通过异常处理器表来确定。</li>
+</ul>
+<p>每个方法被调用完，都代表一个栈帧在虚拟机栈的入栈和出栈</p>
+<h4 id="堆"><a href="#堆" class="headerlink" title="堆"></a>堆</h4><p>存放具体对象，线程共享。</p>
+<h4 id="方法区"><a href="#方法区" class="headerlink" title="方法区"></a><strong>方法区</strong></h4><p>用于存储类的描述信息，包括</p>
+<ul>
+<li>基本信息<ul>
+<li>每个类的全限定名</li>
+<li>直接超类的全限定名</li>
+<li>是类还是接口</li>
+<li>访问修饰符</li>
+<li>直接超接口的全限定名的有序列表</li>
+</ul>
+</li>
+<li>详细信息<ul>
+<li>常量池：每个类对应一个静态常量池，存放用到的所有常量，诸如<strong>字符串常量，==final变量==</strong>，类名和方法名变量。运行时有运行时常量池，基本来源于class文件的静态常量池</li>
+<li>字段信息：名称、类型、修饰符</li>
+<li>方法信息：方法名、返回值类型、参数类型、修饰符、异常、方法的字节码</li>
+<li>静态变量：类的所有实例共享，方法区有个静态区专门存放静态变量和静态块</li>
+<li>到类的ClassLoader的引用</li>
+<li>到类class的引用：JVM为每一个被装载的类型创建一个class实例</li>
+</ul>
+</li>
+</ul>
+<h2 id="GC"><a href="#GC" class="headerlink" title="GC"></a>GC</h2><h3 id="JVM垃圾回收算法"><a href="#JVM垃圾回收算法" class="headerlink" title="JVM垃圾回收算法"></a>JVM垃圾回收算法</h3><p>HotSpot虚拟机中存在三种垃圾回收现象，minor GC、major GC和full GC。对新生代进行垃圾回收叫做minor GC，对老年代进行垃圾回收叫做major GC，同时对新生代、老年代和永久代进行垃圾回收叫做full GC。许多major GC是由minor GC触发的，所以很难将这两种垃圾回收区分开。major GC和full GC通常是等价的，收集整个GC堆。</p>
+<p>标记-清除（无法清除垃圾碎片）、标记整理(向一端移动)，复制算法（复制有用对象）、分代</p>
+<p>新生：老年=1：2，Eden：to:from= 8:1:1</p>
+<p>JVM调优工具</p>
+<p>jconsole和jvisualVM工具</p>
+<p>JVM调优参数</p>
+<p>-Xms：初始堆大小</p>
+<p>-Xmx：堆最大内存</p>
+<h4 id="GC-Roots对象："><a href="#GC-Roots对象：" class="headerlink" title="GC Roots对象："></a>GC Roots对象：</h4><ul>
+<li>局部变量表引用的对象 </li>
+<li>方法区静态变量、常量引用对象</li>
+<li>本地方法栈JNI引用的对象</li>
+</ul>
+<h2 id="反射"><a href="#反射" class="headerlink" title="反射"></a>反射</h2><ul>
+<li><p>getDeclared…()都是获取所有方法，没有Declared都是public</p>
+</li>
+<li><p>访问私有方法需要setAccessible才能进行.</p>
+</li>
+<li><p>主要是泛型里面，不清楚具体的类型，所以需要用反射来获取里面的东西</p>
+</li>
+<li><p><strong>通过newInstance()生成对象时，是调用的空构造函数，是不能调用有参构造函数的。</strong></p>
+</li>
+<li><p>getDeclareConstructors()返回数组中没有特定的排序，而又是数组，所以不能根据下标来确定。且接口、基本类型、void、数组类都是返回长度为0的数组。</p>
+</li>
+<li><p>获取到Class对象后，通过newInstance()来创建实例，通过其他方法获取到Field，Method，Constructor等</p>
+</li>
+</ul>
+<p>使用Class类的getSuperClass()能够得到父类，但是如果是Object类、接口、基本类型或者void、则返回null，数组类则返回Object本身。</p>
+<p>反射和工厂模式的结合，能够减少很多工厂类和产品类。</p>
+<p>如果方法中有返回值，则先声明这个对象，然后返回这个对象，再进行中间的处理操作</p>
+<p><strong>Properties的使用</strong></p>
+<p>主要是读取文件的路径问题。使用ClassLoader.getResourceAsStream(“路径”);</p>
+<p>Properties.load()</p>
+<p><strong>反射和泛型</strong></p>
+<p>一是：<code>BaseDao&lt;T&gt;</code>和<code>BaseDaoImpl&lt;T&gt;</code>，然后再来一个<code>UserDao和UserDaoImpl&lt;User&gt;</code></p>
+<p>二是：根据<code>BaseDao&lt;T&gt;</code>中的泛型，通过反射来获取m.invoke(t),可以先用父类来获取class进而获取到公共方法，之后m.invoke(t)传递的对象确实子类的对象，用泛型T t表示。</p>
+<p>如果通过反射获取泛型，需要指定实际的，也就是要在编译期间能够获得泛型的类型，就是可以利用子类来得到准确的类型。</p>
+<h4 id="CPU-CAS操作"><a href="#CPU-CAS操作" class="headerlink" title="CPU CAS操作"></a>CPU CAS操作</h4><p>CAS，即CompareAndSwap，比较并交换。指令为CAS(V,A,B)：</p>
+<ul>
+<li>V，内存地址</li>
+<li>A，预期值</li>
+<li>B，新值</li>
+</ul>
+<p>语义为：比较V中的值是否与A相同，相同则将V中的值更新为B，不同则不进行操作（或者返回失败）</p>
+<p>use 是读取变量值，assign是为变量赋值</p>
+<p><strong>类之间方法的调用的作用</strong><br>静态变量放在数据区data;</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Cat c = <span class="keyword">new</span> Cat();<span class="comment">//转换为</span></span><br><span class="line">Cat c;<span class="comment">// 1 为声明，在栈内存中分配一块内存，</span></span><br><span class="line">c = <span class="keyword">new</span> Cat(<span class="string">"mimi"</span>);<span class="comment">// 2 先分配字符串常量“mimi”，再在堆内存中创建Cat对象，再将地址赋值给c，</span></span><br></pre></td></tr></table></figure>
+
+<p>调用构造方法时，先在stack中分配一块内存，名称为name，name的值指向“mimi”字符串常量，</p>
+<p>如常量表达式的计算就是在编译期间完成的，如“Love” + “YOU” 就会直接在编译期计算，但是s != s+”” 会在运行期计算型。</p>
+<h5 id="java反编译指令"><a href="#java反编译指令" class="headerlink" title="java反编译指令"></a>java反编译指令</h5><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">javap <span class="literal">-c</span> <span class="literal">-verbose</span> B<span class="class">.<span class="keyword">class</span></span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2020/05/09/JVM/" data-id="ck9z562ul0005zcw6c6c2gqmy" class="article-share-link" data-share="baidu" data-title="JVM">Share</a>
+      
+
+      
+        <a href="http://yoursite.com/2020/05/09/JVM/#ds-thread" class="article-comment-link">Comments</a>
+      
+
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/05/09/Thread/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Thread
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/05/09/IO/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">IO</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+  <section id="comments">
+    <div id="ds-thread" class="ds-thread" data-thread-key="2020/05/09/JVM/" data-title="JVM" data-url="http://yoursite.com/2020/05/09/JVM/"></div>
+  </section>
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaSE/">JavaSE</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaWeb/">JavaWeb</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SSM%E6%A1%86%E6%9E%B6/">SSM框架</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Todo/">Todo</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BA%95%E5%B1%82/">底层</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/">开发工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/">微服务</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a><span class="category-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/05/09/SpringCloud/">SpringCloud</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/09/SpringSecurity/">SpringSecurity</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/09/SpringInAction%E7%AC%94%E8%AE%B0/">SpringInAction笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/09/Mybatis/">Mybatis</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/09/Maven%E9%85%8D%E7%BD%AE/">Maven配置</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Links</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="http://arvinxiang.com" target="_blank">主题作者</a>
+          </li>
+        
+          <li>
+            <a href="http://reqianduan.com" target="_blank">热前端</a>
+          </li>
+        
+          <li>
+            <a href="http://yuancheng.work" target="_blank">远程.work</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 njwj-zhangqi<br>
+      Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+    </div>
+  </div>
+</footer>
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="totop"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+<!-- 多说公共js代码 start -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"reqianduan"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+<!-- 多说公共js代码 end -->
+
+
+<!-- 百度分享 start -->
+
+<div id="article-share-box" class="article-share-box">
+  <div id="bdshare" class="bdsharebuttonbox article-share-links">
+    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
+    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
+    <a class="article-share-more" data-cmd="more" title="更多"></a>
+  </div>
+</div>
+<script>
+  function SetShareData(cmd, config) {
+    if (shareDataTitle && shareDataUrl) {
+      config.bdText = shareDataTitle;
+      config.bdUrl = shareDataUrl;
+    }
+    return config;
+  }
+  window._bd_share_config={
+    "common":{onBeforeClick: SetShareData},
+    "share":{"bdCustomStyle":"/css/bdshare.css"}
+  };
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+<!-- 百度分享 end -->
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+</div>
+</body>
+</html>

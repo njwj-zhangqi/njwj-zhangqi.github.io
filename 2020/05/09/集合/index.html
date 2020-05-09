@@ -1,0 +1,358 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>集合 | njwj-zhangqi Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="常用的集合Collection类：List、ArrayList、LinkedList、Set、HashSet、TreeSet、LinkedHashSet Map类：HashMap、TreeMap、LinkedHashMap、ConcurrentHashMap 特点List：有序可重复，Set：无序不重复 HashMap遍历entrySet entrySet.iterator lambda表达式ma">
+<meta property="og:type" content="article">
+<meta property="og:title" content="集合">
+<meta property="og:url" content="http://yoursite.com/2020/05/09/%E9%9B%86%E5%90%88/index.html">
+<meta property="og:site_name" content="njwj-zhangqi Blog">
+<meta property="og:description" content="常用的集合Collection类：List、ArrayList、LinkedList、Set、HashSet、TreeSet、LinkedHashSet Map类：HashMap、TreeMap、LinkedHashMap、ConcurrentHashMap 特点List：有序可重复，Set：无序不重复 HashMap遍历entrySet entrySet.iterator lambda表达式ma">
+<meta property="article:published_time" content="2020-05-09T03:43:41.000Z">
+<meta property="article:modified_time" content="2020-05-09T03:48:42.318Z">
+<meta property="article:author" content="njwj-zhangqi">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternative" href="/atom.xml" title="njwj-zhangqi Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">njwj-zhangqi Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="yoursite.com">
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-集合" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/05/09/%E9%9B%86%E5%90%88/" class="article-date">
+  <time datetime="2020-05-09T03:43:41.000Z" itemprop="datePublished">2020-05-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/JavaSE/">JavaSE</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      集合
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="常用的集合"><a href="#常用的集合" class="headerlink" title="常用的集合"></a>常用的集合</h3><p>Collection类：List、ArrayList、LinkedList、Set、HashSet、TreeSet、LinkedHashSet</p>
+<p>Map类：HashMap、TreeMap、LinkedHashMap、ConcurrentHashMap</p>
+<h4 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h4><p>List：有序可重复，Set：无序不重复</p>
+<h4 id="HashMap遍历"><a href="#HashMap遍历" class="headerlink" title="HashMap遍历"></a>HashMap遍历</h4><p>entrySet</p>
+<p>entrySet.iterator</p>
+<p>lambda表达式map.forEach((key,value)-&gt;{})</p>
+<h4 id="HashMap的实现原理"><a href="#HashMap的实现原理" class="headerlink" title="HashMap的实现原理"></a>HashMap的实现原理</h4><p>HashMap底层结构是一个数组+链表。当put时，根据传入的key的hashCode计算出hash值，然后和数组长度-1相与，得到当前key值所在的数组位置，如果当前位置有元素，则放到链表尾部</p>
+<p>JDK7 扩容时会发生死循环</p>
+<p>JDK8 多线程条件下会发生数据覆盖</p>
+<h4 id="数组和List之间的转换"><a href="#数组和List之间的转换" class="headerlink" title="数组和List之间的转换"></a><strong>数组和List之间的转换</strong></h4><p>数组转List：Arrays.toList()，List转数组：自带的toArray()方法</p>
+<h4 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1、数组复制</span></span><br><span class="line"><span class="comment">//   System.arraycopy()</span></span><br><span class="line"><span class="comment">//   原数组，原数组下表，新数组，新数组下表，复制长度</span></span><br><span class="line">System.arraycopy(srcArr, srcPos, destArr, srcPos, length);</span><br><span class="line"><span class="comment">//   Arrays.copyOf()</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 2、数组初始化</span></span><br><span class="line"><span class="keyword">int</span>[] arr = &#123;<span class="number">5</span>&#125;;</span><br><span class="line"><span class="keyword">int</span>[] array = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">1</span>];</span><br><span class="line"><span class="keyword">int</span>[] list = <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">5</span>&#125;;</span><br></pre></td></tr></table></figure>
+
+<h4 id="ArrayList分析"><a href="#ArrayList分析" class="headerlink" title="ArrayList分析"></a>ArrayList分析</h4><p>ArrayList默认初始容量10，扩容1.5，hashset初始16，超过容量0.75倍则进行扩容，扩容2倍</p>
+<p>为什么ArrayList默认初始化时容量为0，在添加第一个元素时才会变成10？</p>
+<p>因为有两个static final变量，DefaultCapacity为{}，空构造调用的是DefaultCapacity</p>
+<h3 id="集合泛型的引入"><a href="#集合泛型的引入" class="headerlink" title="集合泛型的引入"></a>集合泛型的引入</h3><p>集合是为了存储多个对象，同时长度能够变化。与数组的重要区别就是可变。</p>
+<ol>
+<li>数组存储多个对象后，就不可变</li>
+<li>集合存储多个对象后，仍然可以通过add等方法添加。</li>
+</ol>
+<p>既然集合能够存储多个对象，那么是否能够存储多个不同类型的对象呢？比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 在不用泛型之前</span><br><span class="line">ArrayList list &#x3D; new ArrayList();</span><br><span class="line">list.add(1);</span><br><span class="line">list.add(&quot;A&quot;);</span><br><span class="line"></span><br><span class="line">for ( int i &#x3D; 0; i &lt; list.size(); i++)&#123;</span><br><span class="line">    int obj &#x3D;(int)list.get(i); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样list里面就存储了Integer和String类型对象。之后访问这些对象，如果不了解存储对象的话,就可能报型转换异常ClassCastException，如果存储了过多的不同类型对象，可能很容易混乱而且不方便使用，各种不同类型的引用对象有不同的方法，也不好使用，因此需要知道list里面存的是固定的类型。于是引出了泛型</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ArrayList&lt;Integer&gt; list &#x3D; new ArrayList&lt;Integer&gt;();</span><br><span class="line">list.add(1);</span><br><span class="line">list.add(&quot;A&quot;); &#x2F;&#x2F; 直接编译报错</span><br></pre></td></tr></table></figure>
+
+<p>这样通过泛型，就能确定具体的类型，从而能够更准确的存储相同类型的数据，避免混乱的存储。</p>
+<hr>
+<h4 id="集合"><a href="#集合" class="headerlink" title="集合"></a>集合</h4><p><strong>集合和数组的区别:</strong></p>
+<ul>
+<li>数组长度不可变，集合长度可变</li>
+<li>数组可以存储任意类型，集合只能存储引用类型（即对象）</li>
+</ul>
+<p><strong>集合的一些记录</strong></p>
+<ol>
+<li><code>Iterable&lt;E&gt;</code>，实现这个接口允许对象成为 “foreach” 语句的目标。</li>
+<li>equals和hashCode都可以用来判断对象是否相等。但是equals一般是给用户调用的，而为了保持逻辑一致，通常在重写equals后，也重写hashCode。</li>
+<li>LinkedHashMap和LinkedHashSet做到的只是保证顺序，而不是排序。指的是，查询数据的顺序是按照插入数据的顺序的，但是并不会进行排序。</li>
+<li>集合在迭代遍历时，不可以用集合对象的方法操作集合中的元素，所以一般用iterator。List集合有时需要用listIterator来对对象进行操作。</li>
+<li>Collection 都是实现了Iterable的，而Iterable接口的方法iterator会返回一个Iterator迭代器对象，每个对象的游标都是在最开始的位置。</li>
+<li>除了非同步和允许使用 null 之外，HashMap 类与 Hashtable 大致相同。</li>
+<li>Object的hashCode主要作用是为了配合基于散列表的集合。如HashMap，HashSet，HashTable。</li>
+<li>HashMap中table.length为什么是2的次幂？ JDK7中 HashMap中table.length是2的次幂，为最接近容量2次幂较大值。同时进行hash值映射到table中的时候，使用hash值&amp;length-1来保证key在table范围内。扩容时，由于用的是2*length来扩容，而映射是hash值&amp;length-1,扩大一倍后length-1只是最左边0变为1，那么hash值如果最左边为0，&amp;的操作会让散列到table位置能够和老的保持一致。</li>
+<li>HashMap大致了解了put和get的机制，主要是put的机制，扩容、hash运算、检测重复</li>
+<li>别人学习HashMap的步骤：<ul>
+<li>静态变量和静态代码块</li>
+<li>构造函数</li>
+<li>常用的方法如put和get</li>
+<li>一步步仔细执行，可以先代入值，一步步走</li>
+</ul>
+</li>
+<li>JDK8里面的HashMap源码，final int loadFactor为什么不需要初始化？</li>
+<li>原来早期的计算机取2次幂的余数都是用位运算来计算的。除以8，就是2^3，假设15除以8，那么15（01111）右移三位，就是000 01,这就是15/8的商–1，那么被移除的三位就是00 111（7），即余数。那么既然除以8的时候，我们知道会右移三位。位运算中，X &amp; 1 = X；也就是数和1相与还是原来的数。那么我们只需要将低三位和1与就知道余数了。恰好8-1为1000-0001=0111，也就得到低三位三个1了。就可以直接得到余数了。</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2020/05/09/%E9%9B%86%E5%90%88/" data-id="ck9z562wr001jzcw65sj02ai7" class="article-share-link" data-share="baidu" data-title="集合">Share</a>
+      
+
+      
+        <a href="http://yoursite.com/2020/05/09/%E9%9B%86%E5%90%88/#ds-thread" class="article-comment-link">Comments</a>
+      
+
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/05/09/IO/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          IO
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/05/09/List%E6%BA%90%E7%A0%81/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">List源码</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+  <section id="comments">
+    <div id="ds-thread" class="ds-thread" data-thread-key="2020/05/09/集合/" data-title="集合" data-url="http://yoursite.com/2020/05/09/%E9%9B%86%E5%90%88/"></div>
+  </section>
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaSE/">JavaSE</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaWeb/">JavaWeb</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SSM%E6%A1%86%E6%9E%B6/">SSM框架</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Todo/">Todo</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BA%95%E5%B1%82/">底层</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/">开发工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/">微服务</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a><span class="category-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/05/09/SpringCloud/">SpringCloud</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/09/SpringSecurity/">SpringSecurity</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/09/SpringInAction%E7%AC%94%E8%AE%B0/">SpringInAction笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/09/Mybatis/">Mybatis</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/09/Maven%E9%85%8D%E7%BD%AE/">Maven配置</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Links</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="http://arvinxiang.com" target="_blank">主题作者</a>
+          </li>
+        
+          <li>
+            <a href="http://reqianduan.com" target="_blank">热前端</a>
+          </li>
+        
+          <li>
+            <a href="http://yuancheng.work" target="_blank">远程.work</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 njwj-zhangqi<br>
+      Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+    </div>
+  </div>
+</footer>
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="totop"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+<!-- 多说公共js代码 start -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"reqianduan"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+<!-- 多说公共js代码 end -->
+
+
+<!-- 百度分享 start -->
+
+<div id="article-share-box" class="article-share-box">
+  <div id="bdshare" class="bdsharebuttonbox article-share-links">
+    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
+    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
+    <a class="article-share-more" data-cmd="more" title="更多"></a>
+  </div>
+</div>
+<script>
+  function SetShareData(cmd, config) {
+    if (shareDataTitle && shareDataUrl) {
+      config.bdText = shareDataTitle;
+      config.bdUrl = shareDataUrl;
+    }
+    return config;
+  }
+  window._bd_share_config={
+    "common":{onBeforeClick: SetShareData},
+    "share":{"bdCustomStyle":"/css/bdshare.css"}
+  };
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+<!-- 百度分享 end -->
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+</div>
+</body>
+</html>

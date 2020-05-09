@@ -1,0 +1,478 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>JavaWeb | njwj-zhangqi Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Tomcattomcat原理Tomcat服务器的启动是基于一个server.xml文件的，Tomcat启动的时候首先会启动一个Server，Server里面就会启动Service，Service里面就会启动多个”Connector(连接器)”，每一个连接器都在等待客户机的连接，当有用户使用浏览器去访问服务器上面的web资源时，首先是连接到Connector(连接器)，Connector(连接器)是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaWeb">
+<meta property="og:url" content="http://yoursite.com/2020/05/09/JavaWeb/index.html">
+<meta property="og:site_name" content="njwj-zhangqi Blog">
+<meta property="og:description" content="Tomcattomcat原理Tomcat服务器的启动是基于一个server.xml文件的，Tomcat启动的时候首先会启动一个Server，Server里面就会启动Service，Service里面就会启动多个”Connector(连接器)”，每一个连接器都在等待客户机的连接，当有用户使用浏览器去访问服务器上面的web资源时，首先是连接到Connector(连接器)，Connector(连接器)是">
+<meta property="article:published_time" content="2020-05-09T04:28:48.000Z">
+<meta property="article:modified_time" content="2020-05-09T04:32:14.526Z">
+<meta property="article:author" content="njwj-zhangqi">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternative" href="/atom.xml" title="njwj-zhangqi Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">njwj-zhangqi Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="yoursite.com">
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-JavaWeb" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/05/09/JavaWeb/" class="article-date">
+  <time datetime="2020-05-09T04:28:48.000Z" itemprop="datePublished">2020-05-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/JavaWeb/">JavaWeb</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      JavaWeb
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="Tomcat"><a href="#Tomcat" class="headerlink" title="Tomcat"></a>Tomcat</h3><h4 id="tomcat原理"><a href="#tomcat原理" class="headerlink" title="tomcat原理"></a><strong>tomcat原理</strong></h4><p>Tomcat服务器的启动是基于一个server.xml文件的，Tomcat启动的时候首先会启动一个Server，Server里面就会启动Service，Service里面就会启动多个”Connector(连接器)”，每一个连接器都在等待客户机的连接，当有用户使用浏览器去访问服务器上面的web资源时，首先是连接到Connector(连接器)，Connector(连接器)是不处理用户的请求的，而是将用户的请求交给一个Engine(引擎)去处理，Engine(引擎)接收到请求后就会解析用户想要访问的Host，然后将请求交给相应的Host，Host收到请求后就会解析出用户想要访问这个Host下面的哪一个Web应用,一个web应用对应一个Context。</p>
+<h4 id="Tomcat相关知识"><a href="#Tomcat相关知识" class="headerlink" title="Tomcat相关知识"></a>Tomcat相关知识</h4><p>Tomcat是一个Web容器。Web容器用于存放静态资源（HTML，CSS，JS）和动态资源（JSP，ASP，PHP），然后浏览器请求资源，Web容器判断请求的是静态还是动态资源，如果是静态资源，就直接返回给浏览器，如果是动态资源，则需要后台进行处理和页面渲染，再返回给浏览器。在这个过程中，Tomcat主要负责和浏览器的通信，如接受请求和响应请求。</p>
+<p>动态资源可以理解为使用Java程序向浏览器输出内容。<br>静态资源就是静态网页</p>
+<p>流程：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line"></span><br><span class="line">a[浏览器] --&gt; |请求资源| b[Web容器]</span><br><span class="line">b --&gt; c&#123;静态&#x2F;动态资源&#125; </span><br><span class="line">c --&gt; d[静态资源]</span><br><span class="line">c --&gt; f[动态资源]</span><br><span class="line">d --&gt; g</span><br><span class="line">f --&gt; h[后台处理]</span><br><span class="line">h --&gt; g[处理完成]</span><br><span class="line">g --&gt; |结束|b</span><br><span class="line">b --&gt; |响应请求|a</span><br></pre></td></tr></table></figure>
+
+<h4 id="Tomcat的目录结构"><a href="#Tomcat的目录结构" class="headerlink" title="Tomcat的目录结构"></a>Tomcat的目录结构</h4><table>
+<thead>
+<tr>
+<th>目录名</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>bin</td>
+<td>脚本执行文件，包含startup.bat,shutdown.bat</td>
+</tr>
+<tr>
+<td>conf</td>
+<td>配置文件，包含server.xml,web.xml</td>
+</tr>
+<tr>
+<td>lib</td>
+<td>Tomcat运行库,jar包</td>
+</tr>
+<tr>
+<td>logs</td>
+<td>日志文件夹,包含每天运行的日志</td>
+</tr>
+<tr>
+<td>temp</td>
+<td>运行时产生的临时文件</td>
+</tr>
+<tr>
+<td>webapps</td>
+<td>项目存放目录</td>
+</tr>
+<tr>
+<td>work</td>
+<td>Tomcat工作目录</td>
+</tr>
+</tbody></table>
+<p>Tomcat服务器的启动是基于一个server.xml文件的，Tomcat启动的时候首先会启动一个Server，Server里面就会启动Service，Service里面就会启动多个”Connector(连接器)”，每一个连接器都在等待客户机的连接，当有用户使用浏览器去访问服务器上面的web资源时，首先是连接到Connector(连接器)，Connector(连接器)是不处理用户的请求的，而是将用户的请求交给一个Engine(引擎)去处理，Engine(引擎)接收到请求后就会解析用户想要访问的Host，然后将请求交给相应的Host，Host收到请求后就会解析出用户想要访问这个Host下面的哪一个Web应用,一个web应用对应一个Context。</p>
+<h4 id="Tomcat加载顺序"><a href="#Tomcat加载顺序" class="headerlink" title="Tomcat加载顺序"></a>Tomcat加载顺序</h4><p>Tomcat自带的web.xml文件用于全局配置，项目自带的用于项目配置，先加载全局配置，再加载项目配置文件。</p>
+<p>启动Web项目时，读取项目的web.xml文件</p>
+<ol>
+<li>读取 <listener> 和 <context-param>节点</li>
+<li>创建一个ServletContext，Web项目共享这个上下文</li>
+<li>将<context-param>转换为键值对，交给ServletContext</li>
+<li>创建<listener>的实例，创建监听器</li>
+<li><load-on-startup> 如果值为正整数或零，则在刚启动时就加载这个Servlet，不存在或者为负数，则被调用的时候加载这个Servlet，正数值越小越先加载</li>
+<li>节点加载顺序为：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line"></span><br><span class="line">a[context-param] --&gt; b[listener]</span><br><span class="line">b --&gt; c[filter]</span><br><span class="line">c --&gt; d[servlet]</span><br></pre></td></tr></table></figure>
+
+<p>filter节点要在filter-mapping之前定义，servlet要在servlet-mapping之前定义。当请求资源匹配<strong>多个</strong>filter-mapping时，按照定义先后顺序执行，Serlvet类似。</p>
+<p>另外一些节点：</p>
+<ul>
+<li><session-config> 如果某个会话在一定时间内未被访问，服务器可以抛弃</li>
+<li><error-page> 在返回特定HTTP状态代码或指定异常被抛出时，指定相应的界面</li>
+</ul>
+<h4 id="Tomcat问题"><a href="#Tomcat问题" class="headerlink" title="Tomcat问题"></a>Tomcat问题</h4><ol>
+<li><strong>安装</strong><ul>
+<li>安装包下载</li>
+<li>配置环境变量(CATALINA_HOME,Path)</li>
+</ul>
+</li>
+<li><strong>Tomcat启动start.bat一闪而过</strong></li>
+</ol>
+<p>问题：启动Tomcat 一闪而过，代表Tomcat启动失败</p>
+<p>办法： 在start.bat文件末尾，添加pause，查看启动的问题（这个办法很有用）。 下面是报错：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">The CATALINA_HOME environment variable is not defined correctly</span><br><span class="line">This environment variable is needed to run this program</span><br></pre></td></tr></table></figure>
+
+<p>环境变量定义的不正确？去检查环境变量，发现我解压了两个Tomcat，一个Tomcat6，一个Tomcat7，我在环境变量中设置的是Tomcat6路径，但是我是在Tomcat7中的start.bat启动…</p>
+<p>解决：更改环境变量为Tomcat7解压根路径。</p>
+<ol start="3">
+<li><strong>项目URL映射</strong></li>
+</ol>
+<p>在server.xml文件中，会有一个Host标签，代表虚拟主机。其中的属性：</p>
+<ul>
+<li>appBase – 存放应用的路径，可以为绝对路径，类似于默认的webapps。</li>
+<li>name – 主机名，一般使用localhost</li>
+<li>unpackWARs – 设置为true时，在tomcat启动时自动解压war包</li>
+</ul>
+<p>在Host标签下的Context标签，代表一个项目。其中的属性：</p>
+<ul>
+<li>docBase – 代表项目的路径，可以是绝对路径，也可以是相对appBase的路径，直接写项目名称。</li>
+<li>path – 代表访问的URL名称，即“localhost:8080/path”访问项目</li>
+</ul>
+<ol start="4">
+<li><strong>Tomcat项目启动两次</strong></li>
+</ol>
+<p>问题： Tomcat项目启动两次</p>
+<p>原因：一般是因为在Eclipse中，默认的设置是放在wtpwebaaps目录下，当把server.xml中的发布路径改成Tomcat的webapps后，项目会直接发布到webapps下。</p>
+<p>又由于Host的appBase为默认的webapps，所以会加载一次项目。然后在Context下又加载了一次。</p>
+<p>解决：将appBase改为其他路径，Context的docBase为appBase下相对于真实项目的地址。如下：appBase为与webapps同级的路径,则Context的docBase为  “../webapps/project”</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line"></span><br><span class="line">a[webapps] --&gt; b[project]</span><br><span class="line">c[appBase] --&gt; 虚拟项目</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li><strong>修改启动端口和字符编码</strong></li>
+</ol>
+<p>同样是在server.xml文件中，Server标签下。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;Connector URIEncoding=<span class="string">"UTF-8"</span> connectionTimeout=<span class="string">"20000"</span> port=<span class="string">"8081"</span> protocol=<span class="string">"HTTP/1.1"</span> redirectPort=<span class="string">"8443"</span>/&gt;</span><br></pre></td></tr></table></figure>
+
+<p>为什么web.xml文件需要放在WEB-INF目录下。</p>
+<p>原因：WEB-INF目录只能被服务器访问，不能被客户端访问，所以JSP等页面放在WEB-INF下就更安全。</p>
+<h5 id="web-xml文件的作用"><a href="#web-xml文件的作用" class="headerlink" title="web.xml文件的作用"></a>web.xml文件的作用</h5><p>主要用来配置Filter，Listener，Servlet等。 启动一个web工程时，会去读取web.xml文件，加载顺序为：ServletContext–&gt;context-param–&gt;listener–&gt;filter–&gt;servlet。</p>
+<h3 id="JSP和Servlet"><a href="#JSP和Servlet" class="headerlink" title="JSP和Servlet"></a><strong>JSP和Servlet</strong></h3><h4 id="JSP的九大内置对象"><a href="#JSP的九大内置对象" class="headerlink" title="JSP的九大内置对象"></a><strong>JSP的九大内置对象</strong></h4><ul>
+<li>request</li>
+<li>response</li>
+<li>pageContext，获取其他对象</li>
+<li>session</li>
+<li>application，服务器运行环境</li>
+<li>out，服务端响应的输出流对象</li>
+<li>config，Web应用的配置对象</li>
+<li>page，JSP页面本身</li>
+<li>exception：页面抛出的异常</li>
+</ul>
+<h4 id="JSP4种作用域"><a href="#JSP4种作用域" class="headerlink" title="JSP4种作用域"></a><strong>JSP4种作用域</strong></h4><ul>
+<li>page，页面相关</li>
+<li>request，请求</li>
+<li>session，会话</li>
+<li>application，全局作用于</li>
+</ul>
+<h4 id="避免SQL注入"><a href="#避免SQL注入" class="headerlink" title="避免SQL注入"></a><strong>避免SQL注入</strong></h4><p>使用预处理PrepareStatement</p>
+<p>使用正则表达式过滤特殊字符</p>
+<h4 id="XSS攻击"><a href="#XSS攻击" class="headerlink" title="XSS攻击"></a><strong>XSS攻击</strong></h4><p>跨站脚本攻击，必须对输入的数据进行过滤处理</p>
+<h4 id="CSRF攻击"><a href="#CSRF攻击" class="headerlink" title="CSRF攻击"></a><strong>CSRF攻击</strong></h4><p>跨站请求伪造。添加验证码，添加token</p>
+<h4 id="forward和redirect"><a href="#forward和redirect" class="headerlink" title="forward和redirect"></a><strong>forward和redirect</strong></h4><p>forward能共享request里面的数据，redirect不能。</p>
+<p>forward url不会改变，redirect会改变</p>
+<p>Servlet是一个供其他Java程序（Servlet引擎）调用的Java类，它不能独立运行，它的运行完全由Servlet引擎来控制和调度。<br>　　针对客户端的多次Servlet请求，通常情况下，服务器只会创建一个Servlet实例对象，也就是说Servlet实例对象一旦创建，它就会驻留在内存中，为后续的其它请求服务，直至web容器退出，servlet实例对象才会销毁。<br>　　在Servlet的整个生命周期内，Servlet的init方法只被调用一次。而对一个Servlet的每次访问请求都导致Servlet引擎调用一次servlet的service方法。对于每次访问请求，Servlet引擎都会创建一个新的HttpServletRequest请求对象和一个新的HttpServletResponse响应对象，然后将这两个对象作为参数传递给它调用的Servlet的service()方法，service方法再根据请求方式分别调用doXXX方法。</p>
+<h4 id="Cookien和Session"><a href="#Cookien和Session" class="headerlink" title="Cookien和Session"></a>Cookien和Session</h4><p>会话：指的浏览器访问服务器多个web资源，然后关闭浏览器的整个过程。</p>
+<p>保存会话数据的两种技术：Cookie和Session。</p>
+<p>Cookie是存在客户端的，Session是存在服务端的。</p>
+<p>Cookie通过setMaxAge() 来保证cookie不过期，同时setMaxAge(0)是让浏览器删除cookie</p>
+<p>Session为每个用户浏览器创建一个Session对象，request.getSession()获得对象，服务器创建Session返回时，会将SessionId 写入到Cookie中，返回给客户端，然后客户端每次请求时都会带有SessionId。</p>
+<p>如果客户端禁用了Cookie，通过response.encodeURL方法将URL进行重写</p>
+<p>Session创建是在第一次调用request.getSession()，Session对象默认30分钟没有使用服务器就会自动销毁。在 web.xml中可以配置失效时间。</p>
+<p>手动销毁session，调用session.invalidate();</p>
+<p>Session防止表单重复提交。<br>表单重复提交的场景：1. 多次点击“提交”按钮  2. 刷新  3. 回退</p>
+<p>解决方法：</p>
+<ol>
+<li>控制提交按钮不可用（解决问题1）</li>
+<li>在服务器生成一个唯一的随机Token，保存在Session中，然后发送到Form表单使用隐藏域保存，表单提交的时候连同Token一起提交到服务器，表单提交的时候连同Token一起提交，只处理Token一致的情况，处理完后清除Session中的Token。</li>
+</ol>
+<h4 id="JSP指令"><a href="#JSP指令" class="headerlink" title="JSP指令"></a>JSP指令</h4><p>JSP表达式：&lt;%= 变量或表达式 %&gt;，不能用分号<br>JSP脚本片段: &lt;% %&gt; 编写多行Java代码，不能定义方法,必须带分号<br>JSP指令： 语法 &lt;%@ 指令 属性名=”值” %&gt;</p>
+<ul>
+<li>page指令 &lt;%@ page import=”java.util.Date” %&gt;</li>
+<li>include指令 &lt;%@ include file=”/project/1.jsp” %&gt; &lt;jsp:include page=””&gt;</jsp:include></li>
+<li>taglib指令 &lt;%@ taglib prefix=”c” uri=”<a href="http://java.sun.com/jsp/jstl/core&quot;" target="_blank" rel="noopener">http://java.sun.com/jsp/jstl/core&quot;</a> %&gt;</li>
+</ul>
+<p>JSP属性范围：</p>
+<ul>
+<li>当前页，跳转到其他页面无法获取pageContext.setAttribute()</li>
+<li>一次服务器请求，经过服务器的跳转仍能获取request.setAttribute(),客户端的超链接跳转就不可以</li>
+<li>一次会话，用户的一次会话，session.setAttribute()，针对同一个用户</li>
+<li>上下文，服务器上的属性，都可以访问，application.setAttribute()</li>
+<li></li>
+</ul>
+<p>在JSP中使用JavaBean：</p>
+<ul>
+<li>&lt;jsp:useBean id=”beanName” class=”pakage.class” scope=”page|request|session|application” &gt; 在指定范围域查找指定名称的JavaBean对象，存在直接返回，否则实例化并存在指定域中。</li>
+<li><a href="jsp:setProperty">jsp:setProperty</a></li>
+<li><a href="jsp:getProperty">jsp:getProperty</a>（了解即可）</li>
+</ul>
+<p>Servlet的缺点：</p>
+<ul>
+<li>控制逻辑复杂，每一个请求对应一个Servlet，而不是相同类的请求调用不同的方法，减少Servlet的数量</li>
+<li>请求参数封装到模型比较麻烦。如果页面上参数有很多，我们需要封装成Model，就需要重复的request.getParameter(),model.setName()等等。</li>
+<li>转发和重定向依赖ServletAPI(?)，转发只能使用forward，</li>
+<li>给页面传输数据，也依赖ServletAPI(?)request.setAttribute()。</li>
+</ul>
+<p>依赖Servlet API的缺点感觉不算缺点，第一点和第二点才是比较重要的</p>
+<p>EL表达式实际会调用pageContext.findAttribute()，分别从page、request、session、application四个域中查找相应的对象。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2020/05/09/JavaWeb/" data-id="ck9z562uo0007zcw6dsywhifg" class="article-share-link" data-share="baidu" data-title="JavaWeb">Share</a>
+      
+
+      
+        <a href="http://yoursite.com/2020/05/09/JavaWeb/#ds-thread" class="article-comment-link">Comments</a>
+      
+
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/05/09/MySQL/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          MySQL
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/05/09/Thread/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Thread</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+  <section id="comments">
+    <div id="ds-thread" class="ds-thread" data-thread-key="2020/05/09/JavaWeb/" data-title="JavaWeb" data-url="http://yoursite.com/2020/05/09/JavaWeb/"></div>
+  </section>
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaSE/">JavaSE</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaWeb/">JavaWeb</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SSM%E6%A1%86%E6%9E%B6/">SSM框架</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Todo/">Todo</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BA%95%E5%B1%82/">底层</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/">开发工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/">微服务</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a><span class="category-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/05/09/SpringCloud/">SpringCloud</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/09/SpringSecurity/">SpringSecurity</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/09/SpringInAction%E7%AC%94%E8%AE%B0/">SpringInAction笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/09/Mybatis/">Mybatis</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/09/Maven%E9%85%8D%E7%BD%AE/">Maven配置</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Links</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="http://arvinxiang.com" target="_blank">主题作者</a>
+          </li>
+        
+          <li>
+            <a href="http://reqianduan.com" target="_blank">热前端</a>
+          </li>
+        
+          <li>
+            <a href="http://yuancheng.work" target="_blank">远程.work</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 njwj-zhangqi<br>
+      Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+    </div>
+  </div>
+</footer>
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="totop"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+<!-- 多说公共js代码 start -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"reqianduan"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+<!-- 多说公共js代码 end -->
+
+
+<!-- 百度分享 start -->
+
+<div id="article-share-box" class="article-share-box">
+  <div id="bdshare" class="bdsharebuttonbox article-share-links">
+    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
+    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
+    <a class="article-share-more" data-cmd="more" title="更多"></a>
+  </div>
+</div>
+<script>
+  function SetShareData(cmd, config) {
+    if (shareDataTitle && shareDataUrl) {
+      config.bdText = shareDataTitle;
+      config.bdUrl = shareDataUrl;
+    }
+    return config;
+  }
+  window._bd_share_config={
+    "common":{onBeforeClick: SetShareData},
+    "share":{"bdCustomStyle":"/css/bdshare.css"}
+  };
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+<!-- 百度分享 end -->
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+</div>
+</body>
+</html>

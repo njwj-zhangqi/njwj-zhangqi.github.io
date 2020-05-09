@@ -1,0 +1,421 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>SQL | njwj-zhangqi Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="join inner join 将两张表匹配的数据显示出来 left join将左边的表全部显示出来，右边表只显示符合条件的数据 char和varchar的区别 char固定长度，但是浪费空间，varchar可变长度，存储的值是占用的字节加上用来记录长度的字节长度 各种字段的最佳大小：比如用户名等等 解决：用户名和密码采用varchar64 MySQL乐观锁 乐观锁需要自己加版本号，读多写少，悲观">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SQL">
+<meta property="og:url" content="http://yoursite.com/2020/05/09/SQL/index.html">
+<meta property="og:site_name" content="njwj-zhangqi Blog">
+<meta property="og:description" content="join inner join 将两张表匹配的数据显示出来 left join将左边的表全部显示出来，右边表只显示符合条件的数据 char和varchar的区别 char固定长度，但是浪费空间，varchar可变长度，存储的值是占用的字节加上用来记录长度的字节长度 各种字段的最佳大小：比如用户名等等 解决：用户名和密码采用varchar64 MySQL乐观锁 乐观锁需要自己加版本号，读多写少，悲观">
+<meta property="article:published_time" content="2020-05-09T04:33:35.000Z">
+<meta property="article:modified_time" content="2020-05-09T04:33:45.901Z">
+<meta property="article:author" content="njwj-zhangqi">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternative" href="/atom.xml" title="njwj-zhangqi Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">njwj-zhangqi Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="yoursite.com">
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-SQL" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/05/09/SQL/" class="article-date">
+  <time datetime="2020-05-09T04:33:35.000Z" itemprop="datePublished">2020-05-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      SQL
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>join</strong></p>
+<p>inner join 将两张表匹配的数据显示出来</p>
+<p>left join将左边的表全部显示出来，右边表只显示符合条件的数据</p>
+<p><strong>char和varchar的区别</strong></p>
+<p>char固定长度，但是浪费空间，varchar可变长度，存储的值是占用的字节加上用来记录长度的字节长度</p>
+<p>各种字段的最佳大小：比如用户名等等</p>
+<p>解决：用户名和密码采用varchar64</p>
+<p><strong>MySQL乐观锁</strong></p>
+<p>乐观锁需要自己加版本号，读多写少，悲观锁每次取数据都会上锁</p>
+<p><strong>三范式</strong></p>
+<p>第一范式：列不可再分</p>
+<p> 第二范式：在1NF基础上，表必须有主键，且非主键必须依赖于主键，否则容易产生冗余（适当的冗余也是可以的） </p>
+<p>第三范式：在2NF基础上，非主键列必须直接依赖于主键，而不能依赖非主键列，再通过非主键列依赖主键</p>
+<h3 id="order-by-子句"><a href="#order-by-子句" class="headerlink" title="order by 子句"></a>order by 子句</h3><ol>
+<li>order by 总是select语句的最后一个子句</li>
+<li>ordery by之后可以使用nulls first 或者nulls last来指定列中null值放在前面还是后面</li>
+<li>order by 可以使用字符串函数、数学函数对一列进行排序</li>
+</ol>
+<h3 id="distinct"><a href="#distinct" class="headerlink" title="distinct"></a>distinct</h3><ol>
+<li>Distinct 用于消除重复行，如果一个字段使用了distinct，另一个没有，则会根据两个字段的组合再消除重复行，</li>
+<li>distinct对null，认为多个null也是一个null，如果有null的列和其他列组合查询，仍然可能会出现多个null，参见第一条。</li>
+</ol>
+<h3 id="where"><a href="#where" class="headerlink" title="where"></a>where</h3><ol>
+<li>在select from where中，执行顺序为：from指定表–&gt;where子句基于条件–&gt;select选择返回的列。</li>
+</ol>
+<h3 id="Fetch（限制行数）"><a href="#Fetch（限制行数）" class="headerlink" title="Fetch（限制行数）"></a>Fetch（限制行数）</h3><ol>
+<li>在11g及以下，使用rownum&lt;=来限制行数。在12c中，使用fetch next 5 rows only。</li>
+</ol>
+<p>Oracle 列转行</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> wm_concat(<span class="keyword">name</span>) <span class="keyword">from</span> table_name;</span><br></pre></td></tr></table></figure>
+
+<p>Oracle分区： partition by range(LOGGED_DATE) interval(numtoyminterval (1,’month’)) (partition part1 values less than (to_date(‘2018-01-01’,’YYYY-MM-DD’)) );</p>
+<p>Oralce查询锁表语句：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> sess.sid, </span><br><span class="line"> sess.serial<span class="comment">#, </span></span><br><span class="line"> lo.oracle_username, </span><br><span class="line"> lo.os_user_name, </span><br><span class="line"> ao.object_name, </span><br><span class="line"> lo.locked_mode </span><br><span class="line"> <span class="keyword">from</span> v$locked_object lo, </span><br><span class="line"> dba_objects ao, </span><br><span class="line"> v$<span class="keyword">session</span> sess </span><br><span class="line"><span class="keyword">where</span> ao.object_id = lo.object_id <span class="keyword">and</span> lo.session_id = sess.sid</span><br></pre></td></tr></table></figure>
+
+<p>解锁语句</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">alter system kill session&#39;session_id,serial#&#39;;</span><br><span class="line">alter system kill session&#39;453,10316&#39;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Oracle数据库搭建语句</strong></p>
+<p>Oracle数据库的创建，和MySQL创建的步骤不同，MySQL中是直接create database 数据库名；但是Oracle在中间添加了一个表空间，由表空间来连接用户和数据库。所以新建数据库的时候是<strong>先创建表空间，指定用户再授权</strong>，有了表空间后，会更加灵活。</p>
+<p>默认在同一个数据库实例中，新建一个表空间，创建用户后需要指定表空间，也可以再创建一个用户指定相同的表空间。之后如果需要更改某个用户的表空间，也可以通过语句操作。</p>
+<p>也就是表空间和用户实际上没有固定的关系，但是用户一般都有一个默认的表空间。建表语句 如果不指定表空间，则在当前用户的默认表空间中创建，指定之后就是在指定表空间中创建</p>
+<p>所以Oracle建库语句步骤一般为：</p>
+<ol>
+<li>新建数据表空间和临时表空间</li>
+<li>新建用户并指定表空间</li>
+<li>给用户授权</li>
+<li>切换用户登录</li>
+<li>登录后开始建表</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">-- 新建数据表空间</span><br><span class="line">create tablespace space_name -- 表空间名称</span><br><span class="line">datafile &#39;D:\Oracle\oradata\space_name.dbf&#39; -- 文件路径</span><br><span class="line">size 50m -- 空间大小</span><br><span class="line">autoextend on -- 自动增长</span><br><span class="line">next 50m maxsize 1024m -- 可省略，下一次增长大小、最大容量</span><br><span class="line">extent management local; -- 可省略，未知</span><br><span class="line"></span><br><span class="line">-- 新建临时表空间</span><br><span class="line">create temporary space_name_temp</span><br><span class="line">datafile &#39;D:\Oracle\oradata\space_name_temp.dbf&#39;</span><br><span class="line">size 50m</span><br><span class="line">autoextend on</span><br><span class="line">next 50m maxsize 1024m</span><br><span class="line">extent management local;</span><br><span class="line"></span><br><span class="line">-- 新建用户</span><br><span class="line">create user user_name</span><br><span class="line">identified by user_password</span><br><span class="line">default tablespace space_name</span><br><span class="line">temporary tablespace space_name_temp</span><br><span class="line"></span><br><span class="line">-- 授权</span><br><span class="line">grant connect,resource to user_name</span><br><span class="line"></span><br><span class="line">-- 用户PL&#x2F;SQL调试的授权语句</span><br><span class="line">GRANT debug any procedure, debug connect session TO user_name;</span><br><span class="line"></span><br><span class="line">-- 删除用户</span><br><span class="line">drop user user_name cascade;</span><br><span class="line"></span><br><span class="line">-- 删除空的表空间，不包含物理文件</span><br><span class="line">drop tablespace space_name;</span><br><span class="line"></span><br><span class="line">-- 删除空的表空间，包含物理文件</span><br><span class="line">drop tablespace space_name including datafiles;</span><br><span class="line"></span><br><span class="line">-- 删除非空的表空间，不包含物理文件</span><br><span class="line">drop tablespace space_name including contents;</span><br><span class="line"></span><br><span class="line">-- 删除非空的表空间，包含物理文件</span><br><span class="line">drop tablespace space_name including contents and datafiles;</span><br><span class="line"></span><br><span class="line">-- 外键等约束关联，删除</span><br><span class="line">drop tablespace space_name including contents and datafiles cascade constraints;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Oracle数据库备份语句</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">-- 完全备份</span><br><span class="line">exp user_name&#x2F;user_password@orcl buffer&#x3D;1024 file&#x3D;d:\bakcup.dmp full&#x3D;y</span><br><span class="line"></span><br><span class="line">-- 指定system,sys用户的表导出</span><br><span class="line">exp user_name&#x2F;user_password@orcl file&#x3D;d:\backup.dmp owner&#x3D;(system,sys)</span><br><span class="line"></span><br><span class="line">-- 指定表导出</span><br><span class="line">exp user_name&#x2F;user_password@orcl file&#x3D;d:\backup.dmp tables&#x3D;(teachers,students)</span><br><span class="line"></span><br><span class="line">-- 过滤条件导出</span><br><span class="line">exp user_name&#x2F;user_password@orcl file&#x3D;d:\backup.dmp tables&#x3D;(teachers) query&#x3D;\&quot;&quot;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Oracle数据库还原语句</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-- 全部导入，建议使用log来查看导入情况</span><br><span class="line">imp user_name&#x2F;user_password@orcl file&#x3D;d:\backup.dmp full&#x3D;y ignore&#x3D;y log&#x3D;d:\log.txt</span><br><span class="line"></span><br><span class="line">-- 导入指定表</span><br><span class="line">imp user_name&#x2F;user_password@orcl file&#x3D;d:\backup.dmp tables&#x3D;(teachers,students)</span><br></pre></td></tr></table></figure>
+
+<p><strong>Oracle表操作语句</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">-- 创建表</span><br><span class="line">create table table_name(</span><br><span class="line">    id integer not null</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">-- 删除表</span><br><span class="line">drop table table_name;</span><br><span class="line"></span><br><span class="line">-- 重命名表</span><br><span class="line">alter table table_name rename to new_name;</span><br><span class="line"></span><br><span class="line">-- 增加字段</span><br><span class="line">alter table table_name add(col_name varchar2(20) default &#39;无&#39; not null)</span><br><span class="line"></span><br><span class="line">-- 修改字段</span><br><span class="line">alter table table_name modify(col_name varchar2(40));</span><br><span class="line"></span><br><span class="line">-- 重命名字段</span><br><span class="line">alter table table_name rename column col_name to new_name;</span><br><span class="line"></span><br><span class="line">-- 删除字段</span><br><span class="line">alter table table_name drop column col_name;</span><br><span class="line"></span><br><span class="line">-- 添加主键</span><br><span class="line">alter table table_name add primary key(id);</span><br><span class="line"></span><br><span class="line">-- 删除主键</span><br><span class="line">alter table table_name drop primary key(id);</span><br></pre></td></tr></table></figure>
+
+<p><strong>Oracle视图及索引语句</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">-- 创建索引</span><br><span class="line">create [unique] index index_name on table_name(col,...);</span><br><span class="line"></span><br><span class="line">-- 创建视图</span><br><span class="line">create view view_name </span><br><span class="line">as </span><br><span class="line">select col_name from table_name</span><br><span class="line">with read only constraint -- 只读视图</span><br><span class="line"></span><br><span class="line">-- 删除索引</span><br><span class="line">drop index index_name;</span><br><span class="line"></span><br><span class="line">-- 删除视图</span><br><span class="line">drop view view_name;</span><br><span class="line"></span><br><span class="line">-- 创建序列</span><br><span class="line">create sequence seq_name</span><br><span class="line">minvalue 1</span><br><span class="line">maxvalue 99999999</span><br><span class="line">increment by 1</span><br><span class="line">start with 1</span><br><span class="line">cache 20</span><br><span class="line">noorder nocycle;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Oracle 表复制语句</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">-- 复制表结构和数据</span><br><span class="line">create teble table_1 as select * from table_2;</span><br><span class="line"></span><br><span class="line">-- 复制表数据</span><br><span class="line">insert into table_1 select * from table_2;</span><br><span class="line"></span><br><span class="line">-- 复制表结构</span><br><span class="line">create table table_1 as select * from table_2 where 1&gt; 1;</span><br><span class="line"></span><br><span class="line">-- 复制指定字段</span><br><span class="line">create table table_1 as select id,name from table_2 where 1&gt; 1;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Oracle树形结构查询</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">- 先父后子</span><br><span class="line">connect by prior dept_id &#x3D; par_dept_id</span><br><span class="line">prior的理解是，之前记录的id是现在记录的父级id</span><br><span class="line"></span><br><span class="line">- 先子后父</span><br><span class="line">connect by dtep_id &#x3D; prior par_dept_id</span><br><span class="line">prior的理解是，现在记录的id是之前记录的父级id</span><br><span class="line">-- 语法</span><br><span class="line">select *</span><br><span class="line">from table_name</span><br><span class="line">start with org_id &#x3D; &#39;1&#39; -- 开始节点</span><br><span class="line">connect by prior org_id &#x3D; par_org_id -- 先父后子</span><br><span class="line">where org_id &#x3D; &#39;1&#39; -- 过滤条件</span><br><span class="line">order by org_id -- 排序</span><br></pre></td></tr></table></figure>
+
+<p><strong>Oracle 游标For遍历</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">cursor p_cursor is</span><br><span class="line"> select *</span><br><span class="line"> from sys_org</span><br><span class="line"> start with org_code &#x3D; orgCode</span><br><span class="line"> connect by prior org_id &#x3D; parent_id</span><br><span class="line"> order by org_id;</span><br><span class="line">p_row p_cursor%rowtype;</span><br><span class="line"></span><br><span class="line">for p_row in p_cursor loop</span><br><span class="line">  DBMS_output.put_line(p_row.id);</span><br><span class="line">end loop;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Oracle无参存储过程</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">无参数时存储过程不需要加括号</span><br></pre></td></tr></table></figure>
+
+<p><strong>Oracle将某个表的列名换成一行</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-- 表名必须大写</span><br><span class="line">select wm_concat(column_name) from user_tab_columns where table_name&#x3D;&#39;SYS_DIC&#39;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>ORA错误系列</strong></p>
+<ul>
+<li>ORA-01403, select into 语句查询到的记录不存在</li>
+<li>ORA-01422: 实际返回的行数超出请求的行数。</li>
+</ul>
+<p><strong>Oracle查询优化相关</strong></p>
+<ol>
+<li>Oracle执行的是执行计划，而不是按照SQL语句顺序来执行.</li>
+<li>如果在where子句中有or或者根据索引列之后的列来进行过滤，则不会走索引，而进行全表扫描</li>
+<li>执行的顺序:<ul>
+<li>from –&gt; where –&gt; group by –&gt; order by</li>
+<li>执行from子句是从右往左执行，选择记录条数少的表放在右边</li>
+<li>where子句也是从后向前执行，因此过滤最大条数的子句放在最末尾，对于多表之间的连接，则需要写在前面</li>
+<li>select 子句尽量避免使用<em>来执行，</em>会自动转换成列名，浪费时间</li>
+</ul>
+</li>
+</ol>
+<p><strong>Oracle存储过程相关</strong></p>
+<ul>
+<li>else if的结构：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">if a&#x3D;1 then</span><br><span class="line">    ...</span><br><span class="line">elsif a&#x3D;2 then</span><br><span class="line">    ...</span><br><span class="line">end if;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>变量避免使用某些可能为关键字的东西，否则可能造成无效。可以在每个参数中加入前缀或者后缀来避免这种错误。</li>
+</ul>
+<p><strong>Oracle索引失效问题</strong></p>
+<p>小表的时候不需要建立索引</p>
+<ol>
+<li>使用索引列的Null 和Not Null会失效，如where name is null</li>
+<li>使用函数，如substr(name,1,3)=’ABC’会导致name失效</li>
+<li>进行计算，如 age/ 10&gt; 10会失效，可以改成age &gt;10* 10</li>
+<li>使用Not(!=,&lt;&gt;)会失效,换成其他情况</li>
+</ol>
+<p><strong>Oracle效率相关</strong></p>
+<p>使用exists替代in，not exists 代替not in，或者外连接也比in好，in 会对子查询的表执行一个全表遍历</p>
+<p><strong>Oracle delete和truncate</strong></p>
+<p>delete 删除时会记录日志，如果未提交是可以恢复的。删除较慢。 truncate不会记录日志，删除很快。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2020/05/09/SQL/" data-id="ck9z562v6000kzcw68bptdort" class="article-share-link" data-share="baidu" data-title="SQL">Share</a>
+      
+
+      
+        <a href="http://yoursite.com/2020/05/09/SQL/#ds-thread" class="article-comment-link">Comments</a>
+      
+
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/05/09/Spring/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Spring
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/05/09/MySQL/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">MySQL</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+  <section id="comments">
+    <div id="ds-thread" class="ds-thread" data-thread-key="2020/05/09/SQL/" data-title="SQL" data-url="http://yoursite.com/2020/05/09/SQL/"></div>
+  </section>
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaSE/">JavaSE</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaWeb/">JavaWeb</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SSM%E6%A1%86%E6%9E%B6/">SSM框架</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Todo/">Todo</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BA%95%E5%B1%82/">底层</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/">开发工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/">微服务</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a><span class="category-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/05/09/SpringCloud/">SpringCloud</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/09/SpringSecurity/">SpringSecurity</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/09/SpringInAction%E7%AC%94%E8%AE%B0/">SpringInAction笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/09/Mybatis/">Mybatis</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/09/Maven%E9%85%8D%E7%BD%AE/">Maven配置</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Links</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="http://arvinxiang.com" target="_blank">主题作者</a>
+          </li>
+        
+          <li>
+            <a href="http://reqianduan.com" target="_blank">热前端</a>
+          </li>
+        
+          <li>
+            <a href="http://yuancheng.work" target="_blank">远程.work</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 njwj-zhangqi<br>
+      Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+    </div>
+  </div>
+</footer>
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="totop"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+<!-- 多说公共js代码 start -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"reqianduan"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+<!-- 多说公共js代码 end -->
+
+
+<!-- 百度分享 start -->
+
+<div id="article-share-box" class="article-share-box">
+  <div id="bdshare" class="bdsharebuttonbox article-share-links">
+    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
+    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
+    <a class="article-share-more" data-cmd="more" title="更多"></a>
+  </div>
+</div>
+<script>
+  function SetShareData(cmd, config) {
+    if (shareDataTitle && shareDataUrl) {
+      config.bdText = shareDataTitle;
+      config.bdUrl = shareDataUrl;
+    }
+    return config;
+  }
+  window._bd_share_config={
+    "common":{onBeforeClick: SetShareData},
+    "share":{"bdCustomStyle":"/css/bdshare.css"}
+  };
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+<!-- 百度分享 end -->
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+</div>
+</body>
+</html>
